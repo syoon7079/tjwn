@@ -3,20 +3,23 @@
 
 노출변수: 저학력 정의: edu <=2 
 
-B-1. 화살표 목록
-age → edu*          (출생 코호트: 고령층일수록 학력이 낮음)
-age → htn
-sex → edu*          (고령 코호트에서 성별 학력 격차)
-sex → htn
-edu → income
-edu → smk, drink, exercise
-edu → bmi
-income → bmi
-smk, drink, exercise, bmi → htn
-income → htn
-htn → income*       (역방향: 질병으로 인한 근로 제한)
+B-1.
+💬 화살표 목록
+age → edu              age → htn
+male → edu *           male → htn
+urban → edu *          urban → htn
+edu → htn              (직접경로)
+edu → income           income → htn
+edu → smk_cur          smk_cur → htn
+edu → drink            drink → htn
+edu → exercise         exercise → htn
+edu → bmi              bmi → htn
+edu → sbp              sbp → htn          bmi → sbp
+sbp → htn_med          htn_med → htn      (htn 정의에 약물복용 포함)
+bmi → prog             htn → prog         (교육용 변수 prog)
+height                 (어느 변수와도 인과 화살표 없음)
 
-B-1. 네 유형으로 분류
+💬 네 유형으로 분류
 | 변수 | 유형 | 근거 (한 줄) |
 | age | 교란 | 연령이 학력 분포(코호트)와 혈압 양쪽의 원인이다 |
 | sex | 교란 | 성별이 학력 격차와 고혈압 위험 양쪽에 영향을 준다 |
@@ -24,12 +27,12 @@ B-1. 네 유형으로 분류
 | bmi | 매개 | 학력 → 식습관 → 체중 → 혈압으로 가는 통로다 |
 | smk / drink / exercise | 매개 | 학력 이후에 형성되는 행동이고 혈압으로 가는 통로다 |
 
-B-1.보정집합 결정
-1)보정해야 할 변수 (교란변수): {age, sex}
-원인: age와 sex는 노출(edu)과 결과(htn) 모두에 공통 원인으로 작용하여 교란 경로(Backdoor Path: edu ← age → htn, edu ← sex → htn)를 형성하므로 반드시 보정해야한다.
+💬 보정집합 = { age, male }
 
-2) 보정에서 제외해야 할 변수 (매개변수): {income, bmi, smk, drink, exercise}
-원인: 이 변수들은 노출(edu)이 결과(htn)에 영향을 미치는 인과 경로 상에 위치한 매개변수(Mediator)이다. 매개변수를 보정할 경우 교육의 전체 인과 효과(Total Effect)가 왜곡( 과소평가/과잉보정 편향)되므로 보정집합에서 제외한다.
+💬 넣은 변수와 뺀 변수 각각의 이유 (한 문단 이상)
+>넣은 변수. 연령은 노출과 결과의 가장 강한 공통 원인이다. 이 자료에서 보정 전후 초졸 이하 vs 대졸 이상 OR이 6.34에서 1.13으로 변한다. 성별은 세대별 교육 격차가 있을 수 있는 교란 후보이며, 해가 없으므로(매개도 충돌부도 아님) 포함한다. 연령을 직선·이차항으로 넣은 결과가 같아 연령 보정은 충분하다.
+>뺀 변수. 소득·흡연·음주·운동·체중·혈압은 교육 이후의 변수(매개)라서 보정하면 총효과의 일부를 지운다. htn_med와 sbp는 결과의 정의에도 들어 있어 더욱 안 된다. prog는 충돌부(고혈압의 후손)라서 보정하면 막혀 있던 경로가 열린다. height는 무관해서 넣을 이유가 없다. 이 셋이 B-3(과보정 시연)의 재료다.
+>최소충분성. 위 DAG에서 {age, male}이 충분하며 male → edu 화살표를 지우면 {age}만으로도 충분하다. 두 경우의 결과가 같음을 민감도 분석으로 확인했다
 
 B-2. 
 
