@@ -216,3 +216,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# 원시자료 (국민건강영양조사 등)
+*.sav
+*.sas7bdat
+*.dta
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.pkl
+*.rds
+*.zip
+
+# 자료 폴더 전체
+hdac_data/
+data/
+raw/
+
+# Colab/Jupyter 임시 파일
+.ipynb_checkpoints/
